@@ -2,13 +2,13 @@ import 'dart:html';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:assignment_2/home_page.dart';
 
 enum SingingCharacter {dog, cat,osu,mesu}
 
 class Registration extends StatefulWidget {
-  const Registration({Key? key}) : super(key: key);
-
+  const Registration({Key? key,required this.registration}) : super(key: key);
+ final String registration;
   @override
   State<Registration> createState() => _RegistrationState();
 }
@@ -95,9 +95,11 @@ class _RegistrationState extends State<Registration> {
                 ),
                 const SizedBox(height: 30,),
                 ElevatedButton(
-                  onPressed: (
+                  onPressed: () {
+                    setState(() {
 
-                    ) {},
+                    });
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
