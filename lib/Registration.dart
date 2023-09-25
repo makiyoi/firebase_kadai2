@@ -1,4 +1,4 @@
-import 'dart:html';
+//import 'dart:html';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +7,10 @@ import 'package:assignment_2/home_page.dart';
 enum SingingCharacter {dog, cat,osu,mesu}
 
 class Registration extends StatefulWidget {
-  const Registration({Key? key,required this.registration}) : super(key: key);
- final String registration;
+  const Registration({Key? key}) : super(key: key);
+
+
+
   @override
   State<Registration> createState() => _RegistrationState();
 }
@@ -16,12 +18,18 @@ class Registration extends StatefulWidget {
 class _RegistrationState extends State<Registration> {
   SingingCharacter? _character = SingingCharacter.dog;
   SingingCharacter? _jender = SingingCharacter.osu;
+  final _nameEditingController = TextEditingController();
+  final _varietyEditingController = TextEditingController();
+  final _ageEditingController = TextEditingController();
 
   @override
+
+
+
+
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(actions: [
-
+      appBar: AppBar(actions: const [
       ],
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
@@ -30,11 +38,11 @@ class _RegistrationState extends State<Registration> {
         child: SizedBox(
           width: MediaQuery.of(context).size.width/1.2,
           child: Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextFormField(
+            padding: const EdgeInsets.only(top: 5),
+           child: Column(
+                children: [
+                  TextFormField(
+                  controller: _nameEditingController,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(labelText: '名前',border: OutlineInputBorder()),
                   ),
@@ -62,6 +70,7 @@ class _RegistrationState extends State<Registration> {
                 ),
                 const SizedBox(height: 30,),
                 TextFormField(
+                  controller: _varietyEditingController,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(labelText: '品種',border: OutlineInputBorder()),
                 ),
@@ -90,16 +99,14 @@ class _RegistrationState extends State<Registration> {
                 ),
                 const SizedBox(height: 30,),
                 TextFormField(
+                  controller: _ageEditingController,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(labelText: '年齢',border: OutlineInputBorder()),
                 ),
                 const SizedBox(height: 30,),
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
+                  onPressed: ()=>Navigator.of(context).pop(),
 
-                    });
-                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -107,10 +114,26 @@ class _RegistrationState extends State<Registration> {
                   ),
                   child: const Text('登録',style: TextStyle(fontSize: 15,color: Colors.white),),
                 ),
-              ],
+             ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+class SelectCard extends StatelessWidget {
+  const SelectCard({Key? key, required this.selectData,}) : super(key: key);
+final Map<String,dynamic> selectData;
+//final String name;
+
+  @override
+
+  Widget build(BuildContext context) {
+    return  Card(
+      child: ListTile(
+        title: Text(selectData['name']),
+        subtitle: Text(selectData['']),
       ),
     );
   }
