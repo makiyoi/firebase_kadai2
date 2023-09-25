@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String selectMenu ='';
+   String selectMenu ="";
   final _nameEditingController = TextEditingController();
   final _varietyEditingController = TextEditingController();
   final _ageEditingController = TextEditingController();
@@ -24,14 +24,14 @@ class _HomePageState extends State<HomePage> {
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
-  Future<void> _addselect() async{
-    await FirebaseFirestore.instance.collection('selects').doc().set({
-      'name': _nameEditingController.text,
-      'variety': _varietyEditingController.text,
-      'age': _ageEditingController.text,
-    });
-    _listScrollController.jumpTo(_listScrollController.position.maxScrollExtent);
-  }
+//  Future<void> addselected() async{
+  //  await FirebaseFirestore.instance.collection('selects').doc().set({
+    //  'name': _nameEditingController.text,
+  //    'variety': _varietyEditingController.text,
+   //   'age': _ageEditingController.text,
+ //   });
+ //   _listScrollController.jumpTo(_listScrollController.position.maxScrollExtent);
+ // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String item) {
               setState(() {
-                selectMenu = item;
+                 selectMenu = item;
                 //widget.registration != '';
               });
             },

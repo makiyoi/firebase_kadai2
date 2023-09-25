@@ -10,7 +10,6 @@ class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
 
 
-
   @override
   State<Registration> createState() => _RegistrationState();
 }
@@ -22,6 +21,21 @@ class _RegistrationState extends State<Registration> {
   final _varietyEditingController = TextEditingController();
   final _ageEditingController = TextEditingController();
 
+
+   Future<DocumentSnapshot> selectData = FirebaseFirestore.instance.collection('selects').doc().get();
+
+  Future<void> addselected() async{
+    await FirebaseFirestore.instance.collection('selects').doc().set({
+      'name': _nameEditingController.text,
+      'variety': _varietyEditingController.text,
+      'age': _ageEditingController.text,
+
+    });
+   // _listScrollController.jumpTo(_listScrollController.position.maxScrollExtent);
+    _nameEditingController.clear();
+    _varietyEditingController.clear();
+    _ageEditingController.clear();
+  }
   @override
 
 
@@ -105,14 +119,19 @@ class _RegistrationState extends State<Registration> {
                 ),
                 const SizedBox(height: 30,),
                 ElevatedButton(
-                  onPressed: ()=>Navigator.of(context).pop(),
+                  onPressed: () {
+                    addselected();
 
+                  },
+                    //=>Navigator.of(context).pop(),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                   ),
+
                   child: const Text('登録',style: TextStyle(fontSize: 15,color: Colors.white),),
+
                 ),
              ],
             ),
@@ -128,12 +147,12 @@ final Map<String,dynamic> selectData;
 //final String name;
 
   @override
-
   Widget build(BuildContext context) {
     return  Card(
       child: ListTile(
-        title: Text(selectData['name']),
-        subtitle: Text(selectData['']),
+        leading: const Icon(Icons.pets),
+        title: Text('名前: ${selectData['name']} 年齢: ${selectData['age']} 品種: ${selectData['variety']}'),
+        subtitle: Text('性別: ${selectData['']}'),
       ),
     );
   }
