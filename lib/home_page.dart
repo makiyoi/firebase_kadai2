@@ -4,34 +4,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title,});//required this.registration});
+  const HomePage({super.key, required this.title});//required this.registration});
 
   final String title;
-  //final String registration;
+  
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-   String selectMenu ="";
+   //String selectMenu ="";
   final _nameEditingController = TextEditingController();
   final _varietyEditingController = TextEditingController();
   final _ageEditingController = TextEditingController();
   final _listScrollController = ScrollController();
-  final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
-
+ // final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
-//  Future<void> addselected() async{
-  //  await FirebaseFirestore.instance.collection('selects').doc().set({
-    //  'name': _nameEditingController.text,
-  //    'variety': _varietyEditingController.text,
-   //   'age': _ageEditingController.text,
- //   });
- //   _listScrollController.jumpTo(_listScrollController.position.maxScrollExtent);
- // }
+    final Stream<QuerySnapshot> _selectsStream =
+    FirebaseFirestore.instance.collection('selects').orderBy('age',descending: true).snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +34,15 @@ class _HomePageState extends State<HomePage> {
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.menu),
-            onSelected: (String item) {
+            onSelected: (String value) {
               setState(() {
-                 selectMenu = item;
-                //widget.registration != '';
+                // selectMenu; = value;
+
               });
             },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
-                  value:  '猫のみ',
+                  value:  '',
                   child:  ListTile(
                     title: Text('猫のみ'),
                   )),

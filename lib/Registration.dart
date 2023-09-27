@@ -1,10 +1,12 @@
-//import 'dart:html';
+import 'dart:html';
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:assignment_2/home_page.dart';
 
-enum SingingCharacter {dog, cat,osu,mesu}
+enum SingingCharacter {dog,cat,osu,mesu}
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -15,11 +17,29 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  SingingCharacter? _character = SingingCharacter.dog;
-  SingingCharacter? _jender = SingingCharacter.osu;
+  //SingingCharacter? _character = SingingCharacter.dog;
+ // SingingCharacter? _jender = SingingCharacter.osu;
   final _nameEditingController = TextEditingController();
   final _varietyEditingController = TextEditingController();
   final _ageEditingController = TextEditingController();
+  String _jender = '';
+  String _character ='';
+
+
+
+  String getCharacter(SingingCharacter singingCharacter) {
+    switch(singingCharacter){
+      case SingingCharacter.dog:
+        return '犬';
+      case SingingCharacter.cat:
+        return '猫';
+      case SingingCharacter.osu:
+        return 'オス';
+      case SingingCharacter.mesu:
+        return 'メス';
+    }
+  }
+
 
 
    Future<DocumentSnapshot> selectData = FirebaseFirestore.instance.collection('selects').doc().get();
@@ -29,13 +49,15 @@ class _RegistrationState extends State<Registration> {
       'name': _nameEditingController.text,
       'variety': _varietyEditingController.text,
       'age': _ageEditingController.text,
-
+      'jender': _jender,
+      'animal': _character,
     });
    // _listScrollController.jumpTo(_listScrollController.position.maxScrollExtent);
     _nameEditingController.clear();
     _varietyEditingController.clear();
     _ageEditingController.clear();
   }
+
   @override
 
 
@@ -64,18 +86,19 @@ class _RegistrationState extends State<Registration> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Radio(value: SingingCharacter.osu, groupValue: _character,
-                        onChanged: (SingingCharacter? value){
+                    Radio(value: '犬', groupValue: _character,
+                        onChanged: (value){
                       setState(() {
-                        _character = value;
+                        _character = value!;
                       });
                         }),
+
                     const Text('犬'),
                     const SizedBox(width: 130,),
-                    Radio(value: SingingCharacter.mesu, groupValue: _character,
-                      onChanged:(SingingCharacter? value){
+                    Radio(value: '猫', groupValue: _character,
+                      onChanged:(value){
                       setState(() {
-                        _character = value;
+                        _character = value!;
                       });
                       },
                     ),
@@ -92,23 +115,24 @@ class _RegistrationState extends State<Registration> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Radio(value: SingingCharacter.dog, groupValue: _jender,
-                        onChanged: (SingingCharacter? value){
+                    Radio(value: 'オス', groupValue: _jender,
+                        onChanged: (value){
                       setState(() {
-                        _jender = value;
+                        _jender = value!;
                       });
                         },
                     ),
                     const Text('オス'),
                     const SizedBox(width: 130,),
-                    Radio(value: SingingCharacter.cat, groupValue: _jender,
-                      onChanged:(SingingCharacter? value){
+                    Radio(value: 'メス', groupValue: _jender,
+                      onChanged:(value){
                       setState(() {
-                        _jender = value;
+                        _jender = value!;
                       });
                       },
                     ),
                     const Text('メス'),
+
                   ],
                 ),
                 const SizedBox(height: 30,),
@@ -121,6 +145,7 @@ class _RegistrationState extends State<Registration> {
                 ElevatedButton(
                   onPressed: () {
                     addselected();
+
 
                   },
                     //=>Navigator.of(context).pop(),
@@ -142,9 +167,9 @@ class _RegistrationState extends State<Registration> {
   }
 }
 class SelectCard extends StatelessWidget {
-  const SelectCard({Key? key, required this.selectData,}) : super(key: key);
+  const SelectCard({Key? key, required this.selectData}) : super(key: key);
 final Map<String,dynamic> selectData;
-//final String name;
+
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +177,8 @@ final Map<String,dynamic> selectData;
       child: ListTile(
         leading: const Icon(Icons.pets),
         title: Text('名前: ${selectData['name']} 年齢: ${selectData['age']} 品種: ${selectData['variety']}'),
-        subtitle: Text('性別: ${selectData['']}'),
+        subtitle: Text('性別: ${selectData['jender']}'),
+        tileColor: Colors.blue[100],
       ),
     );
   }
