@@ -7,7 +7,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});//required this.registration});
 
   final String title;
-  
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -15,11 +15,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
    String selectMenus = '';
 
-
   final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
+  }
+
+  void popupMenu() {
+    switch (selectMenus) {
+      case 'cat':
+        FirebaseFirestore.instance.collection('selects').where(
+            'animal', isEqualTo: 'cat').snapshots();
+        break;
+      case 'dog' :
+        FirebaseFirestore.instance.collection('selects').where(
+            'animal', isEqualTo: 'dog').snapshots();
+        break;
+      case 'ageup':
+        FirebaseFirestore.instance.collection('selects').orderBy(
+            'age', descending: true).snapshots();
+        break;
+      case 'agedown':
+        FirebaseFirestore.instance.collection('selects').orderBy(
+            'age', descending: false).snapshots();
+    }
   }
 
 
@@ -34,20 +53,8 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value) {
               setState(() {
-                switch(selectMenus) {
-                  case 'cat':
-                    FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
-                    break;
-                  case 'dog' :
-                    FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'dog').snapshots();
-                    break;
-                  case 'ageup':
-                    FirebaseFirestore.instance.collection('selects').orderBy('age', descending: true).snapshots();
-                    break;
-                  case 'agedown':
-                    FirebaseFirestore.instance.collection('selects').orderBy('age', descending: false).snapshots();
-                }});
-            },
+                popupMenu();
+              }); },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
                   value: 'cat',
