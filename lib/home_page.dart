@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   String selectMenu = '';
+   String selectMenus = '';
 
 
   final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
@@ -22,10 +22,14 @@ class _HomePageState extends State<HomePage> {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
 
-  final Stream<QuerySnapshot> _cat = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'cat').snapshots();
-  final Stream<QuerySnapshot> _dog = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'dog' ).snapshots();
-  final Stream<QuerySnapshot> _ageup = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: true).snapshots();
-  final Stream<QuerySnapshot> _agedown = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: false).snapshots();
+  //final Stream<QuerySnapshot> _cat = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'cat').snapshots();
+  //final Stream<QuerySnapshot> _dog = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'dog' ).snapshots();
+ // final Stream<QuerySnapshot> _ageup = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: true).snapshots();
+ // final Stream<QuerySnapshot> _agedown = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: false).snapshots();
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +41,19 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value) {
               setState(() {
-                selectMenu = value;
-              });
+                switch(selectMenus) {
+                  case 1:
+                    FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
+                    break;
+                  case 2 :
+                    FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'dog').snapshots();
+                    break;
+                  case 3:
+                    FirebaseFirestore.instance.collection('selects').orderBy('age', descending: true).snapshots();
+                    break;
+                  case 4:
+                    FirebaseFirestore.instance.collection('selects').orderBy('age', descending: false).snapshots();
+                }});
             },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
