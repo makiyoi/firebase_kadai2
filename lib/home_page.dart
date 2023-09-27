@@ -22,13 +22,6 @@ class _HomePageState extends State<HomePage> {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
 
-  //final Stream<QuerySnapshot> _cat = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'cat').snapshots();
-  //final Stream<QuerySnapshot> _dog = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'dog' ).snapshots();
- // final Stream<QuerySnapshot> _ageup = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: true).snapshots();
- // final Stream<QuerySnapshot> _agedown = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: false).snapshots();
-
-
-
 
 
   @override
@@ -42,37 +35,37 @@ class _HomePageState extends State<HomePage> {
             onSelected: (String value) {
               setState(() {
                 switch(selectMenus) {
-                  case 1:
+                  case 'cat':
                     FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
                     break;
-                  case 2 :
+                  case 'dog' :
                     FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'dog').snapshots();
                     break;
-                  case 3:
+                  case 'ageup':
                     FirebaseFirestore.instance.collection('selects').orderBy('age', descending: true).snapshots();
                     break;
-                  case 4:
+                  case 'agedown':
                     FirebaseFirestore.instance.collection('selects').orderBy('age', descending: false).snapshots();
                 }});
             },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
-                  value: '',
+                  value: 'cat',
                   child:  ListTile(
                     title: Text('猫のみ'),
                   )),
               const PopupMenuItem(
-                  value: '',
+                  value: 'dog',
                   child: ListTile(
                     title: Text('犬のみ'),
                   )),
               const PopupMenuItem(
-                  value: '年齢：昇順',
+                  value: 'ageup',
                   child: ListTile(
                     title: Text('年齢：昇順'),
                   )),
               const PopupMenuItem(
-                  value: '年齢：降順',
+                  value: 'agedown',
                   child: ListTile(
                     title: Text('年齢：降順'),
                   )),
