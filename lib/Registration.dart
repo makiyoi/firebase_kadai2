@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:assignment_2/home_page.dart';
+
 
 enum SingingCharacter {dog,cat,osu,mesu}
 
@@ -17,8 +17,7 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  //SingingCharacter? _character = SingingCharacter.dog;
- // SingingCharacter? _jender = SingingCharacter.osu;
+
   final _nameEditingController = TextEditingController();
   final _varietyEditingController = TextEditingController();
   final _ageEditingController = TextEditingController();
@@ -40,8 +39,6 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
-
-
    Future<DocumentSnapshot> selectData = FirebaseFirestore.instance.collection('selects').doc().get();
 
   Future<void> addselected() async{
@@ -52,7 +49,6 @@ class _RegistrationState extends State<Registration> {
       'jender': _jender,
       'animal': _character,
     });
-   // _listScrollController.jumpTo(_listScrollController.position.maxScrollExtent);
     _nameEditingController.clear();
     _varietyEditingController.clear();
     _ageEditingController.clear();
@@ -148,7 +144,7 @@ class _RegistrationState extends State<Registration> {
 
 
                   },
-                    //=>Navigator.of(context).pop(),
+
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -162,23 +158,6 @@ class _RegistrationState extends State<Registration> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-class SelectCard extends StatelessWidget {
-  const SelectCard({Key? key, required this.selectData}) : super(key: key);
-final Map<String,dynamic> selectData;
-
-
-  @override
-  Widget build(BuildContext context) {
-    return  Card(
-      child: ListTile(
-        leading: const Icon(Icons.pets),
-        title: Text('名前: ${selectData['name']} 年齢: ${selectData['age']} 品種: ${selectData['variety']}'),
-        subtitle: Text('性別: ${selectData['jender']}'),
-        tileColor: Colors.blue[100],
       ),
     );
   }

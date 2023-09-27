@@ -13,18 +13,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   //String selectMenu ="";
-  final _nameEditingController = TextEditingController();
-  final _varietyEditingController = TextEditingController();
-  final _ageEditingController = TextEditingController();
-  final _listScrollController = ScrollController();
- // final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
+   String selectMenu = '';
+
+
+  final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
-    final Stream<QuerySnapshot> _selectsStream =
-    FirebaseFirestore.instance.collection('selects').orderBy('age',descending: true).snapshots();
+
+  final Stream<QuerySnapshot> _cat = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'cat').snapshots();
+  final Stream<QuerySnapshot> _dog = FirebaseFirestore.instance.collection('selects').where('animal',isEqualTo: 'dog' ).snapshots();
+  final Stream<QuerySnapshot> _ageup = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: true).snapshots();
+  final Stream<QuerySnapshot> _agedown = FirebaseFirestore.instance.collection('selects').orderBy('age',descending: false).snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +37,17 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value) {
               setState(() {
-                // selectMenu; = value;
-
+                selectMenu = value;
               });
             },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
-                  value:  '',
+                  value: '',
                   child:  ListTile(
                     title: Text('猫のみ'),
                   )),
               const PopupMenuItem(
-                  value: '犬のみ',
+                  value: '',
                   child: ListTile(
                     title: Text('犬のみ'),
                   )),
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                    List<DocumentSnapshot> selectsData = snapshot.data!.docs;
                    return Expanded(
                      child: ListView.builder(
-                       controller: _listScrollController,
+
                        itemCount: selectsData.length,
                        itemBuilder: (context, index) {
                          final selectData = selectsData[index].data()! as Map<String, dynamic>;
@@ -92,31 +92,27 @@ class _HomePageState extends State<HomePage> {
           ),
          ],
        ),
-    //  body:  Card(
-      //  child :ListTile(
-        //  title: Text(selectMenu,),
-        //)
-        //child: Row(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //  children: <Widget>[
-        //    Padding(
-          //    padding: const EdgeInsets.all(8.0),
-           //   child: Card(
-           //     child:
-           //     Text(selectMenu,style: const TextStyle(fontSize: 20,),
-                  //'You have pushed the button this many times:',
-            //    ),
-           //
-         //   ),
-         // ],
-       // ),
-   // ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Registration(), )),
 
         child: const Icon(Icons.add),
       ),
-       // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+class SelectCard extends StatelessWidget {
+  const SelectCard({Key? key, required this.selectData}) : super(key: key);
+  final Map<String,dynamic> selectData;
+
+  @override
+  Widget build(BuildContext context) {
+    return  Card(
+      child: ListTile(
+        leading: const Icon(Icons.pets),
+        title: Text('名前: ${selectData['name']} 年齢: ${selectData['age']} 品種: ${selectData['variety']}'),
+        subtitle: Text('性別: ${selectData['jender']}'),
+        tileColor: Colors.blue[100],
+      ),
     );
   }
 }
