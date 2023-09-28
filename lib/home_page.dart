@@ -16,13 +16,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
    String selectMenus = '';
 
-   Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
+   final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
 
-    popupMenu() {
+    void PopupMenu() {
     switch (selectMenus) {
       case 'cat':
         FirebaseFirestore.instance.collection('selects').where(
@@ -50,11 +50,12 @@ class _HomePageState extends State<HomePage> {
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.menu),
-            onSelected: (String value
-                ) {
-              setState(() {
-                _selectsStream = popupMenu();
-              }); },
+            onSelected: (String value){
+                setState(() {
+                  PopupMenu();
+                });},
+                //) {
+              //},
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
                   value: 'cat',
@@ -91,15 +92,15 @@ class _HomePageState extends State<HomePage> {
                builder: (context, snapshot) {
                  if (snapshot.hasData) {
                    List<DocumentSnapshot> selectsData = snapshot.data!.docs;
+                   PopupMenu();
                    return Expanded(
                      child: ListView.builder(
-
                        itemCount: selectsData.length,
                        itemBuilder: (context, index) {
                          final selectData = selectsData[index].data()! as Map<String, dynamic>;
-                       //  final _selectsStream = popupMenu();
                          return SelectCard(selectData: selectData,);//id: widget.id,);
-                  },
+                         PopupMenu();
+                       },
                 ),
               );
             }
@@ -117,9 +118,8 @@ class _HomePageState extends State<HomePage> {
   }
 }
 class SelectCard extends StatelessWidget {
-  const SelectCard({Key? key, required this.selectData}) : super(key: key);
+  const SelectCard({Key? key, required this.selectData,}) : super(key: key);
   final Map<String,dynamic> selectData;
-
   @override
   Widget build(BuildContext context) {
     return  Card(
