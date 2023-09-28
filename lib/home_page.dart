@@ -9,19 +9,20 @@ class HomePage extends StatefulWidget {
   final String title;
 
   @override
+
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
    String selectMenus = '';
 
-  final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
+   Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
 
-  void popupMenu() {
+    popupMenu() {
     switch (selectMenus) {
       case 'cat':
         FirebaseFirestore.instance.collection('selects').where(
@@ -40,10 +41,8 @@ class _HomePageState extends State<HomePage> {
             'age', descending: false).snapshots();
     }
   }
-
-
-
   @override
+
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -51,9 +50,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.menu),
-            onSelected: (String value) {
+            onSelected: (String value
+                ) {
               setState(() {
-                popupMenu();
+                _selectsStream = popupMenu();
               }); },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        
+
         title: Text(widget.title),
       ),
        body:Column(
@@ -97,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                        itemCount: selectsData.length,
                        itemBuilder: (context, index) {
                          final selectData = selectsData[index].data()! as Map<String, dynamic>;
+                       //  final _selectsStream = popupMenu();
                          return SelectCard(selectData: selectData,);//id: widget.id,);
                   },
                 ),
