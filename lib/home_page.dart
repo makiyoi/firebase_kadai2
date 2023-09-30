@@ -3,10 +3,12 @@ import 'package:assignment_2/Registration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});//required this.registration});
+  const HomePage({super.key, required this.title,});//required this.registration});
 
   final String title;
+
 
   @override
 
@@ -14,7 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   String selectMenus = '';
+   String  selectMenu = '';
+
 
    final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
@@ -22,25 +25,26 @@ class _HomePageState extends State<HomePage> {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
 
-    void PopupMenu() {
-    switch (selectMenus) {
-      case 'cat':
-        FirebaseFirestore.instance.collection('selects').where(
-            'animal', isEqualTo: 'cat').snapshots();
-        break;
-      case 'dog' :
-        FirebaseFirestore.instance.collection('selects').where(
-            'animal', isEqualTo: 'dog').snapshots();
-        break;
-      case 'ageup':
-        FirebaseFirestore.instance.collection('selects').orderBy(
-            'age', descending: true).snapshots();
-        break;
-      case 'agedown':
-        FirebaseFirestore.instance.collection('selects').orderBy(
-            'age', descending: false).snapshots();
+
+  popupMenu(String selectMenu) {
+      switch (selectMenu) {
+        case 'cat':
+          return FirebaseFirestore.instance.collection('selects').where(
+              'animal', isEqualTo: 'cat').snapshots();
+
+        case 'dog' :
+          return FirebaseFirestore.instance.collection('selects').where(
+              'animal', isEqualTo: 'dog').snapshots();
+
+        case 'ageup':
+          return FirebaseFirestore.instance.collection('selects').orderBy(
+              'age', descending: true).snapshots();
+
+        case 'agedown':
+          return FirebaseFirestore.instance.collection('selects').orderBy(
+              'age', descending: false).snapshots();
+      }
     }
-  }
   @override
 
   Widget build(BuildContext context) {
@@ -51,8 +55,11 @@ class _HomePageState extends State<HomePage> {
           PopupMenuButton<String>(
             icon: const Icon(Icons.menu),
             onSelected: (String value){
+
                 setState(() {
-                  PopupMenu();
+                  selectMenu = value;
+                  popupMenu(selectMenu);
+
                 });},
                 //) {
               //},
@@ -92,14 +99,13 @@ class _HomePageState extends State<HomePage> {
                builder: (context, snapshot) {
                  if (snapshot.hasData) {
                    List<DocumentSnapshot> selectsData = snapshot.data!.docs;
-                   PopupMenu();
+
                    return Expanded(
                      child: ListView.builder(
                        itemCount: selectsData.length,
                        itemBuilder: (context, index) {
                          final selectData = selectsData[index].data()! as Map<String, dynamic>;
                          return SelectCard(selectData: selectData,);//id: widget.id,);
-                         PopupMenu();
                        },
                 ),
               );
@@ -110,7 +116,7 @@ class _HomePageState extends State<HomePage> {
          ],
        ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Registration(), )),
+        onPressed: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Registration(), )),
 
         child: const Icon(Icons.add),
       ),

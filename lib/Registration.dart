@@ -26,18 +26,18 @@ class _RegistrationState extends State<Registration> {
 
 
 
-  String getCharacter(SingingCharacter singingCharacter) {
-    switch(singingCharacter){
-      case SingingCharacter.dog:
-        return '犬';
-      case SingingCharacter.cat:
-        return '猫';
-      case SingingCharacter.osu:
-        return 'オス';
-      case SingingCharacter.mesu:
-        return 'メス';
-    }
-  }
+ // String getCharacter(SingingCharacter singingCharacter) {
+  //  switch(singingCharacter){
+   //   case SingingCharacter.dog:
+   //     return '犬';
+  //    case SingingCharacter.cat:
+  //      return '猫';
+  //    case SingingCharacter.osu:
+  //      return 'オス';
+  //    case SingingCharacter.mesu:
+  //      return 'メス';
+  //  }
+  //}
 
    Future<DocumentSnapshot> selectData = FirebaseFirestore.instance.collection('selects').doc().get();
 
