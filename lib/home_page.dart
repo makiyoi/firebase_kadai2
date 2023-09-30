@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   String  selectMenu = '';
+  Stream<QuerySnapshot> selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
 
 
    final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
@@ -26,20 +26,17 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  popupMenu(String selectMenu) {
+  Stream<QuerySnapshot>  popupMenu(Stream<QuerySnapshot> selectMenu) {
       switch (selectMenu) {
         case 'cat':
           return FirebaseFirestore.instance.collection('selects').where(
               'animal', isEqualTo: 'cat').snapshots();
-
         case 'dog' :
           return FirebaseFirestore.instance.collection('selects').where(
               'animal', isEqualTo: 'dog').snapshots();
-
         case 'ageup':
           return FirebaseFirestore.instance.collection('selects').orderBy(
               'age', descending: true).snapshots();
-
         case 'agedown':
           return FirebaseFirestore.instance.collection('selects').orderBy(
               'age', descending: false).snapshots();
@@ -55,11 +52,8 @@ class _HomePageState extends State<HomePage> {
           PopupMenuButton<String>(
             icon: const Icon(Icons.menu),
             onSelected: (String value){
-
                 setState(() {
-                  selectMenu = value;
-                  popupMenu(selectMenu);
-
+                   popupMenu(selectMenu);
                 });},
                 //) {
               //},
@@ -99,7 +93,6 @@ class _HomePageState extends State<HomePage> {
                builder: (context, snapshot) {
                  if (snapshot.hasData) {
                    List<DocumentSnapshot> selectsData = snapshot.data!.docs;
-
                    return Expanded(
                      child: ListView.builder(
                        itemCount: selectsData.length,
