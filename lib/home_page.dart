@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
         case 'agedown':
           return FirebaseFirestore.instance.collection('selects').orderBy(
               'age', descending: false).snapshots();
+        default:
       }
     }
   @override
