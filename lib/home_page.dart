@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  Stream<QuerySnapshot>  popupMenu(Stream<QuerySnapshot> selectMenu) {
+  Stream<QuerySnapshot>  popupMenu(String selectMenu) {
       switch (selectMenu) {
         case 'cat':
           return FirebaseFirestore.instance.collection('selects').where(
@@ -54,10 +54,12 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value){
                 setState(() {
-                  popupMenu(
-                      selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots());
-                });
+                  popupMenu(Stream<QuerySnapshot> selectMenu) {
+                    return FirebaseFirestore.instance.collection('selects').where(
+                        'animal', isEqualTo: 'cat').snapshots();
+                  }});
                 },
+
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
                   value: 'cat',
