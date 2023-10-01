@@ -3,7 +3,6 @@ import 'package:assignment_2/Registration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title,});//required this.registration});
 
@@ -40,7 +39,8 @@ class _HomePageState extends State<HomePage> {
         case 'agedown':
           return FirebaseFirestore.instance.collection('selects').orderBy(
               'age', descending: false).snapshots();
-        default:
+        default :
+        return FirebaseFirestore.instance.collection('selects').snapshots();
       }
     }
   @override
@@ -54,7 +54,8 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value){
                 setState(() {
-                   popupMenu(selectMenu);
+                  //selectMenu;
+                  popupMenu(selectMenu);
                 });},
                 //) {
               //},
