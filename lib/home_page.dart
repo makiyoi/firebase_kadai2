@@ -54,11 +54,10 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value){
                 setState(() {
-                  //selectMenu;
-                  popupMenu(selectMenu);
-                });},
-                //) {
-              //},
+                  popupMenu(
+                      selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots());
+                });
+                },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
                   value: 'cat',
@@ -126,8 +125,8 @@ class SelectCard extends StatelessWidget {
     return  Card(
       child: ListTile(
         leading: const Icon(Icons.pets),
-        title: Text('名前: ${selectData['name']} 年齢: ${selectData['age']} 品種: ${selectData['variety']}'),
-        subtitle: Text('性別: ${selectData['jender']}'),
+        title: Text('名前: ${selectData['name']} 年齢: ${selectData['age']} 品種: ${selectData['variety']} 性別: ${selectData['jender']}'),
+        //subtitle: Text('性別: ${selectData['jender']}'),
         tileColor: Colors.blue[100],
       ),
     );
