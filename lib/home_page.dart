@@ -9,21 +9,21 @@ class HomePage extends StatefulWidget {
   final String title;
 
 
+
   @override
 
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  Stream<QuerySnapshot> selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
-
+ //Stream<QuerySnapshot> selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
+ String selectMenu = 'cat';
 
    final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
   }
-
 
   Stream<QuerySnapshot>  popupMenu(String selectMenu) {
       switch (selectMenu) {
@@ -54,10 +54,8 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value){
                 setState(() {
-                  popupMenu(Stream<QuerySnapshot> selectMenu) {
-                    return FirebaseFirestore.instance.collection('selects').where(
-                        'animal', isEqualTo: 'cat').snapshots();
-                  }});
+                  popupMenu(selectMenu);
+                });
                 },
 
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
