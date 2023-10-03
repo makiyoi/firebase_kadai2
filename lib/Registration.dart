@@ -143,10 +143,7 @@ class _RegistrationState extends State<Registration> {
                 ElevatedButton(
                   onPressed: () {
                     addselected();
-
-
                   },
-
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),

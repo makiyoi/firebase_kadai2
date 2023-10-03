@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
  //Stream<QuerySnapshot> selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
- String selectMenu = 'cat';
+  String selectMenu = '';
 
    final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
@@ -54,10 +54,10 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value){
                 setState(() {
+                  selectMenu = value;
                   popupMenu(selectMenu);
                 });
                 },
-
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
               const PopupMenuItem(
                   value: 'cat',
