@@ -16,10 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- Stream<QuerySnapshot> selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
-  //String selectMenu = '';
+  Stream<QuerySnapshot> selectMenu = FirebaseFirestore.instance.collection('selects').where('animal', isEqualTo: 'cat').snapshots();
 
-   final Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
+  Stream<QuerySnapshot> _selectsStream= FirebaseFirestore.instance.collection('selects').snapshots();
 
   Future<void> addselect(Map<String,dynamic>select) async {
     await FirebaseFirestore.instance.collection('selects').add(select);
@@ -29,10 +28,10 @@ class _HomePageState extends State<HomePage> {
       switch (selectMenu) {
         case 'cat':
           return FirebaseFirestore.instance.collection('selects').where(
-              'animal', isEqualTo: 'cat').snapshots();
+              'animal', isEqualTo: '猫').snapshots();
         case 'dog' :
           return FirebaseFirestore.instance.collection('selects').where(
-              'animal', isEqualTo: 'dog').snapshots();
+              'animal', isEqualTo: '犬').snapshots();
         case 'ageup':
           return FirebaseFirestore.instance.collection('selects').orderBy(
               'age', descending: true).snapshots();
@@ -54,8 +53,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.menu),
             onSelected: (String value){
                 setState(() {
-                  selectMenu = value;
-                  popupMenu(selectMenu);
+                  _selectsStream = popupMenu(value);
                 });
                 },
             itemBuilder: (BuildContext context)=> <PopupMenuEntry<String>>[
@@ -92,26 +90,26 @@ class _HomePageState extends State<HomePage> {
            StreamBuilder<QuerySnapshot>(
                stream: _selectsStream,
                builder: (context, snapshot) {
-                 if (snapshot.hasData) {
+                 if
+                 (snapshot.hasData) {
                    List<DocumentSnapshot> selectsData = snapshot.data!.docs;
                    return Expanded(
                      child: ListView.builder(
                        itemCount: selectsData.length,
                        itemBuilder: (context, index) {
                          final selectData = selectsData[index].data()! as Map<String, dynamic>;
-                         return SelectCard(selectData: selectData,);//id: widget.id,);
-                       },
-                ),
-              );
-            }
-            return const Center(child: CircularProgressIndicator(),);
-          }
-          ),
+                         return SelectCard(selectData: selectData,);
+                         },
+                     ),
+                   );
+                 }
+                 return const Center(child: CircularProgressIndicator(),);
+               }
+               ),
          ],
        ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Registration(), )),
-
         child: const Icon(Icons.add),
       ),
     );
@@ -126,7 +124,6 @@ class SelectCard extends StatelessWidget {
       child: ListTile(
         leading: const Icon(Icons.pets),
         title: Text('名前: ${selectData['name']} 年齢: ${selectData['age']} 品種: ${selectData['variety']} 性別: ${selectData['jender']}'),
-        //subtitle: Text('性別: ${selectData['jender']}'),
         tileColor: Colors.blue[100],
       ),
     );

@@ -1,7 +1,3 @@
-import 'dart:html';
-import 'dart:developer';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +6,6 @@ enum SingingCharacter {dog,cat,osu,mesu}
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
-
 
   @override
   State<Registration> createState() => _RegistrationState();
@@ -24,30 +19,13 @@ class _RegistrationState extends State<Registration> {
   String _jender = '';
   String _character ='';
 
-
-
-  String getCharacter(SingingCharacter singingCharacter) {
-    switch(singingCharacter){
-      case SingingCharacter.dog:
-       return '犬';
-    case SingingCharacter.cat:
-       return '猫';
-     case SingingCharacter.osu:
-       return 'オス';
-     case SingingCharacter.mesu:
-       return 'メス';
-      default:
-        return '';
-    }
-  }
-
-   Future<DocumentSnapshot> selectData = FirebaseFirestore.instance.collection('selects').doc().get();
+  Future<DocumentSnapshot> selectData = FirebaseFirestore.instance.collection('selects').doc().get();
 
   Future<void> addselected() async{
     await FirebaseFirestore.instance.collection('selects').doc().set({
       'name': _nameEditingController.text,
       'variety': _varietyEditingController.text,
-      'age': _ageEditingController.text,
+      'age': int.parse(_ageEditingController.text),
       'jender': _jender,
       'animal': _character,
     });
@@ -58,16 +36,11 @@ class _RegistrationState extends State<Registration> {
 
   @override
 
-
-
-
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(actions: const [
-      ],
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width/1.2,
@@ -89,8 +62,7 @@ class _RegistrationState extends State<Registration> {
                       setState(() {
                         _character = value!;
                       });
-                        }),
-
+                    }),
                     const Text('犬'),
                     const SizedBox(width: 130,),
                     Radio(value: '猫', groupValue: _character,
@@ -114,11 +86,11 @@ class _RegistrationState extends State<Registration> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Radio(value: 'オス', groupValue: _jender,
-                        onChanged: (value){
+                      onChanged: (value){
                       setState(() {
                         _jender = value!;
                       });
-                        },
+                      },
                     ),
                     const Text('オス'),
                     const SizedBox(width: 130,),
@@ -130,7 +102,6 @@ class _RegistrationState extends State<Registration> {
                       },
                     ),
                     const Text('メス'),
-
                   ],
                 ),
                 const SizedBox(height: 30,),
@@ -149,12 +120,10 @@ class _RegistrationState extends State<Registration> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                   ),
-
                   child: const Text('登録',style: TextStyle(fontSize: 15,color: Colors.white),),
-
                 ),
-             ],
-            ),
+                ],
+           ),
           ),
         ),
       ),
